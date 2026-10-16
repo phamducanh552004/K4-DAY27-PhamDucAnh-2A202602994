@@ -24,7 +24,8 @@ SCHEMA_FILE = Path(__file__).resolve().parent.parent / "audit" / "schema.sql"
 
 def db_path() -> str:
     """Return the SQLite file path (override with HITL_DB_PATH env var)."""
-    return os.environ.get("HITL_DB_PATH", "hitl_audit.db")
+    configured_path = os.environ.get("HITL_DB_PATH", "hitl_audit.db")
+    return str(Path(configured_path).expanduser().resolve())
 
 
 async def _ensure_schema(conn: aiosqlite.Connection) -> None:
